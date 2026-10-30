@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { PatientsTable } from "@/components/patients/patients-table";
+import { DeletePatientDialog } from "@/components/patients/delete-patient-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -33,6 +34,7 @@ export function PatientsSection() {
     reload,
     create,
     update,
+    remove,
   } = usePatients(query);
   const { user } = useAuth();
   const isAdmin = user?.role === "ADMIN";
@@ -41,6 +43,7 @@ export function PatientsSection() {
   const [writtenSearch, setWrittenSearch] = useState(query.search);
   const [showCreatePatientForm, setShowCreatePatientForm] = useState(false);
   const [patientToEdit, setPatientToEdit] = useState<Patient | null>(null);
+  const [patientToDelete, setPatientToDelete] = useState<Patient | null>(null);
 
   if (query.search !== appliedSearch) {
     setAppliedSearch(query.search);
@@ -109,6 +112,7 @@ export function PatientsSection() {
           patients={items}
           isLoading={isLoading}
           onEdit={isAdmin ? setPatientToEdit : undefined}
+          onDelete={isAdmin ? setPatientToDelete : undefined}
           options={{
             ...pagination,
             sortBy: query.sortBy,
@@ -137,6 +141,14 @@ export function PatientsSection() {
           </DialogContent>
         </Dialog>
       )}
+
+      {isAdmin && patientToDelete ? (
+        <DeletePatientDialog
+          patient={patientToDelete}
+          onClose={() => setPatientToDelete(null)}
+          onDelete={remove}
+        />
+      ) : null}
 
       {isAdmin && patientToEdit && (
         <Dialog
