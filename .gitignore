@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+!.env.local.example
+
+# Next.js
+frontend/.next/
+frontend/out/
+
+# NestJS / build
+backend/dist/
+backend/coverage/
+
+# Testing
+coverage/
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
