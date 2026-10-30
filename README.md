@@ -14,6 +14,7 @@ I kept this pass to a working patients flow. The items below were considered and
 - **API response shape.** Login returns `accessToken`. The list nests page information under `pagination`. Updates use `PATCH`. Delete returns `{ message }`.
 - **Details for admins.** Admins open a patient through the edit form. The read-only view is for the normal user role.
 - **Token storage.** I am aware that storing the access token in localStorage is not the safest option. I could use cookies, but that setup was going to take more time, and that is why it was not proposed.
+- **Hosted application.** There is no link to a hosted application. I would deploy the Next.js app on Vercel, the NestJS API on Railway, and Postgres on Neon. That setup was left out because of time. Run it locally with the steps in Getting Started.
 
 ## Tech Stack
 

@@ -76,8 +76,8 @@ export function PatientsSection() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="flex justify-between">
-          <div className="max-w-sm">
+        <div className="flex flex-col md:flex-row  gap-4 md:justify-between">
+          <div className="w-full md:max-w-md">
             <label htmlFor="patient-search" className="sr-only">
               Search patients
             </label>
