@@ -1,25 +1,25 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { PatientsTable } from "@/components/patients/patients-table";
-import { DeletePatientDialog } from "@/components/patients/delete-patient-dialog";
-import { Button } from "@/components/ui/button";
+import { useEffect, useState } from 'react';
+import { PatientsTable } from '@/components/patients/patients-table';
+import { DeletePatientDialog } from '@/components/patients/delete-patient-dialog';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { usePatients } from "@/app/hooks";
-import { usePatientListQuery } from "@/hooks/use-patient-list-query";
-import { Dialog, DialogContent } from "../ui/dialog";
-import CreatePatientForm from "./create-patient-form";
-import EditPatientForm from "./edit-patient-form";
-import { useAuth } from "../providers/auth-provider";
-import type { Patient } from "@/lib/types";
-import { UserPlus } from "lucide-react";
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { usePatients } from '@/app/hooks';
+import { usePatientListQuery } from '@/hooks/use-patient-list-query';
+import { Dialog, DialogContent } from '../ui/dialog';
+import CreatePatientForm from './create-patient-form';
+import EditPatientForm from './edit-patient-form';
+import { useAuth } from '../providers/auth-provider';
+import type { Patient } from '@/lib/types';
+import { UserPlus } from 'lucide-react';
 
 export function PatientsSection() {
   const { query, setPage, setLimit, setSearch, setSorting } =
@@ -37,8 +37,8 @@ export function PatientsSection() {
     remove,
   } = usePatients(query);
   const { user } = useAuth();
-  const isAdmin = user?.role === "ADMIN";
-  const isUser = user?.role === "USER";
+  const isAdmin = user?.role === 'ADMIN';
+  const isUser = user?.role === 'USER';
   const [searchInput, setSearchInput] = useState(query.search);
   const [appliedSearch, setAppliedSearch] = useState(query.search);
   const [writtenSearch, setWrittenSearch] = useState(query.search);
@@ -124,7 +124,7 @@ export function PatientsSection() {
             onLimitChange: setLimit,
             onSort: setSorting,
           }}
-          emptyMessage={error ? "Patients could not be loaded." : undefined}
+          emptyMessage={error ? 'Patients could not be loaded.' : undefined}
         />
       </CardContent>
 

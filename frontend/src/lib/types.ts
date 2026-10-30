@@ -11,15 +11,15 @@ export interface LoginResponse {
   user: User;
 }
 
-export interface Patient   {
-    firstName: string
-    lastName:string
-    id:string
-    email: string
-    phoneNumber: string
-    dob: string
-    createdAt: string
-    updatedAt: string
+export interface Patient {
+  firstName: string;
+  lastName: string;
+  id: string;
+  email: string;
+  phoneNumber: string;
+  dob: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface PatientsResponse {
