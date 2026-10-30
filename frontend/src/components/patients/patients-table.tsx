@@ -35,6 +35,7 @@ interface PatientsTableProps {
   patients: Patient[];
   isLoading: boolean;
   options: PatientsTableOptions;
+  onView?: (patient: Patient) => void;
   onEdit?: (patient: Patient) => void;
   onDelete?: (patient: Patient) => void;
   emptyMessage?: ReactNode;
@@ -44,6 +45,7 @@ export function PatientsTable({
   patients,
   isLoading,
   options,
+  onView,
   onEdit,
   onDelete,
   emptyMessage = emptyPatientsMessage,
@@ -58,7 +60,7 @@ export function PatientsTable({
   const table = useTable({
     features: dataTableFeatures,
     data: patients,
-    columns: patientColumns({ onEdit, onDelete }),
+    columns: patientColumns({ onView, onEdit, onDelete }),
     getRowId: (row) => row.id,
     manualPagination: true,
     manualSorting: true,

@@ -4,13 +4,15 @@ import type { PatientFormValues } from '@/lib/validations/patients';
 
 interface EditPatientFormProps {
   patient: Patient;
-  isLoading: boolean;
-  onUpdate: (id: string, values: PatientFormValues) => Promise<void>;
+  isLoading?: boolean;
+  readOnly?: boolean;
+  onUpdate?: (id: string, values: PatientFormValues) => Promise<void>;
 }
 
 export default function EditPatientForm({
   patient,
-  isLoading,
+  isLoading = false,
+  readOnly = false,
   onUpdate,
 }: EditPatientFormProps) {
   const defaultValues: PatientFormValues = {
@@ -25,7 +27,10 @@ export default function EditPatientForm({
     <PatientsForm
       defaultValues={defaultValues}
       isLoading={isLoading}
-      onSubmit={(values) => onUpdate(patient.id, values)}
+      readOnly={readOnly}
+      onSubmit={
+        onUpdate ? (values) => onUpdate(patient.id, values) : undefined
+      }
       submitLabel="Save changes"
       successMessage="Patient updated successfully."
     />

@@ -13,9 +13,10 @@ import {
 } from '@/lib/validations/patients';
 
 interface PatientsFormProps {
-  onSubmit: (values: PatientFormValues) => Promise<void>;
+  onSubmit?: (values: PatientFormValues) => Promise<void>;
   defaultValues?: PatientFormValues;
   isLoading?: boolean;
+  readOnly?: boolean;
   submitLabel?: string;
   successMessage?: string;
 }
@@ -53,6 +54,7 @@ export default function PatientsForm({
   onSubmit,
   defaultValues,
   isLoading = false,
+  readOnly = false,
   submitLabel = 'Save patient',
   successMessage = 'Patient saved successfully.',
 }: PatientsFormProps) {
@@ -66,6 +68,8 @@ export default function PatientsForm({
   });
 
   async function submit(values: PatientFormValues) {
+    if (!onSubmit || readOnly) return;
+
     try {
       await onSubmit(values);
       toast.success(successMessage);
@@ -77,9 +81,13 @@ export default function PatientsForm({
   return (
     <form className="space-y-4" onSubmit={handleSubmit(submit)} noValidate>
       <div>
-        <h2 className="text-lg font-semibold">Patient information</h2>
+        <h2 className="text-lg font-semibold">
+          {readOnly ? 'Patient details' : 'Patient information'}
+        </h2>
         <p className="text-sm text-muted-foreground">
-          Enter the patient&apos;s information below.
+          {readOnly
+            ? 'This record is read only.'
+            : "Enter the patient's information below."}
         </p>
       </div>
 
@@ -88,6 +96,7 @@ export default function PatientsForm({
         <Input
           id="firstName"
           autoComplete="given-name"
+          disabled={readOnly}
           {...register('firstName')}
           aria-invalid={!!errors.firstName}
           aria-describedby={errors.firstName ? 'firstName-error' : undefined}
@@ -104,6 +113,7 @@ export default function PatientsForm({
         <Input
           id="lastName"
           autoComplete="family-name"
+          disabled={readOnly}
           {...register('lastName')}
           aria-invalid={!!errors.lastName}
           aria-describedby={errors.lastName ? 'lastName-error' : undefined}
@@ -121,6 +131,7 @@ export default function PatientsForm({
           id="email"
           type="email"
           autoComplete="email"
+          disabled={readOnly}
           {...register('email')}
           aria-invalid={!!errors.email}
           aria-describedby={errors.email ? 'email-error' : undefined}
@@ -138,6 +149,7 @@ export default function PatientsForm({
           id="phoneNumber"
           type="tel"
           autoComplete="tel"
+          disabled={readOnly}
           {...register('phoneNumber')}
           aria-invalid={!!errors.phoneNumber}
           aria-describedby={
@@ -156,6 +168,7 @@ export default function PatientsForm({
         <Input
           id="dob"
           type="date"
+          disabled={readOnly}
           {...register('dob')}
           aria-invalid={!!errors.dob}
           aria-describedby={errors.dob ? 'dob-error' : undefined}
@@ -167,9 +180,11 @@ export default function PatientsForm({
         )}
       </div>
 
-      <Button type="submit" disabled={isSubmitting || isLoading}>
-        {isSubmitting || isLoading ? 'Saving…' : submitLabel}
-      </Button>
+      {readOnly ? null : (
+        <Button type="submit" disabled={isSubmitting || isLoading}>
+          {isSubmitting || isLoading ? 'Saving…' : submitLabel}
+        </Button>
+      )}
     </form>
   );
 }

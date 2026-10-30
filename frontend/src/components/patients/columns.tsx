@@ -1,7 +1,7 @@
 'use client';
 
 import { createColumnHelper } from '@tanstack/react-table';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Eye, Pencil, Trash2 } from 'lucide-react';
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header';
 import { Button } from '@/components/ui/button';
 import type { DataTableFeatures } from '@/components/data-table/data-table-features';
@@ -10,12 +10,17 @@ import type { Patient } from '@/lib/types';
 const columnHelper = createColumnHelper<DataTableFeatures, Patient>();
 
 interface PatientColumnActions {
+  onView?: (patient: Patient) => void;
   onEdit?: (patient: Patient) => void;
   onDelete?: (patient: Patient) => void;
 }
 
-export function patientColumns({ onEdit, onDelete }: PatientColumnActions = {}) {
-  const showActions = Boolean(onEdit || onDelete);
+export function patientColumns({
+  onView,
+  onEdit,
+  onDelete,
+}: PatientColumnActions = {}) {
+  const showActions = Boolean(onView || onEdit || onDelete);
 
   return columnHelper.columns([
     columnHelper.accessor('firstName', {
@@ -65,6 +70,18 @@ export function patientColumns({ onEdit, onDelete }: PatientColumnActions = {}) 
 
               return (
                 <div className="flex items-center gap-1">
+                  {onView ? (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon-sm"
+                      aria-label={`View ${name}`}
+                      title="View patient"
+                      onClick={() => onView(row.original)}
+                    >
+                      <Eye aria-hidden="true" />
+                    </Button>
+                  ) : null}
                   {onEdit ? (
                     <Button
                       type="button"

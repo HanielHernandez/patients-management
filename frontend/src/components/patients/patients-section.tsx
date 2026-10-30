@@ -38,10 +38,12 @@ export function PatientsSection() {
   } = usePatients(query);
   const { user } = useAuth();
   const isAdmin = user?.role === "ADMIN";
+  const isUser = user?.role === "USER";
   const [searchInput, setSearchInput] = useState(query.search);
   const [appliedSearch, setAppliedSearch] = useState(query.search);
   const [writtenSearch, setWrittenSearch] = useState(query.search);
   const [showCreatePatientForm, setShowCreatePatientForm] = useState(false);
+  const [patientToView, setPatientToView] = useState<Patient | null>(null);
   const [patientToEdit, setPatientToEdit] = useState<Patient | null>(null);
   const [patientToDelete, setPatientToDelete] = useState<Patient | null>(null);
 
@@ -111,6 +113,7 @@ export function PatientsSection() {
         <PatientsTable
           patients={items}
           isLoading={isLoading}
+          onView={isUser ? setPatientToView : undefined}
           onEdit={isAdmin ? setPatientToEdit : undefined}
           onDelete={isAdmin ? setPatientToDelete : undefined}
           options={{
@@ -148,6 +151,19 @@ export function PatientsSection() {
           onClose={() => setPatientToDelete(null)}
           onDelete={remove}
         />
+      ) : null}
+
+      {isUser && patientToView ? (
+        <Dialog
+          open
+          onOpenChange={(open) => {
+            if (!open) setPatientToView(null);
+          }}
+        >
+          <DialogContent>
+            <EditPatientForm patient={patientToView} readOnly />
+          </DialogContent>
+        </Dialog>
       ) : null}
 
       {isAdmin && patientToEdit && (
