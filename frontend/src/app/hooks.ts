@@ -18,6 +18,8 @@ export function usePatients(query: PatientListQuery) {
   const queryKey = `${token ?? ''}|${page}|${limit}|${search}|${sortBy}|${order}`;
 
   const [items, setItems] = useState<Patient[]>([]);
+  const [isCreating, setIsCreating] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -75,10 +77,15 @@ export function usePatients(query: PatientListQuery) {
   const create = useCallback(async (data: PatientFormValues) => {
     if (!token) throw new Error('You must be authenticated');
 
-    const patient = await createPatient(token, data);
-    setGeneration((current) => current + 1);
+    setIsCreating(true);
 
-    return patient;
+    try {
+      const patient = await createPatient(token, data);
+      setGeneration((current) => current + 1);
+      return patient;
+    } finally {
+      setIsCreating(false);
+    }
   }, [token]);
 
   const update = useCallback(async (
@@ -87,10 +94,15 @@ export function usePatients(query: PatientListQuery) {
   ) => {
     if (!token) throw new Error('You must be authenticated');
 
-    const patient = await updatePatient(token, id, data);
-    setGeneration((current) => current + 1);
+    setIsUpdating(true);
 
-    return patient;
+    try {
+      const patient = await updatePatient(token, id, data);
+      setGeneration((current) => current + 1);
+      return patient;
+    } finally {
+      setIsUpdating(false);
+    }
   }, [token]);
 
   const remove = useCallback(async (id: string) => {
@@ -112,6 +124,8 @@ export function usePatients(query: PatientListQuery) {
     sortBy,
     order,
     isLoading,
+    isCreating,
+    isUpdating,
     error,
     reload: () => setGeneration((current) => current + 1),
     create,
