@@ -2,6 +2,19 @@
 
 A full-stack patient management application built as a technical assessment. The project demonstrates a structured frontend/backend architecture, authentication, role-based authorization, patient CRUD operations, server-side search, sorting, pagination, validation, and a responsive user interface.
 
+## What was cut
+
+I kept this pass to a working patients flow. The items below were considered and left out because of time.
+
+- **Optimistic updates.** Create and edit refetch the list after a successful save. A failed save does not roll a row back, because the row is not updated in place.
+- **Theme switcher.** Dark color tokens are already in the stylesheet. I did not add a control to switch themes.
+- **Testing.** The only automated test is the Nest starter spec. I did not add coverage for auth, patients, or the UI.
+- **Simulated latency and forced failures.** Requests succeed or fail as the API responds. I did not add an artificial delay or a way to force an error.
+- **Server-side rendering.** I considered rendering the patients list on the server, and decided not to because of time. The list loads in the browser after sign-in.
+- **API response shape.** Login returns `accessToken`. The list nests page information under `pagination`. Updates use `PATCH`. Delete returns `{ message }`.
+- **Details for admins.** Admins open a patient through the edit form. The read-only view is for the normal user role.
+- **Token storage.** I am aware that storing the access token in localStorage is not the safest option. I could use cookies, but that setup was going to take more time, and that is why it was not proposed.
+
 ## Tech Stack
 
 ### Frontend
@@ -324,7 +337,7 @@ Prisma provides typed database access and schema migrations.
 - Administrative operations require the ADMIN role.
 - Backend DTOs validate incoming data.
 - Environment variables are used for secrets and configuration.
-- The frontend currently stores the access token in localStorage for this assessment. A production implementation should consider secure, HttpOnly, SameSite cookies and an appropriate CSRF strategy.
+- The frontend stores the access token in localStorage for this assessment. Cookies would be safer, and that tradeoff is explained under What was cut.
 
 ## Development Notes
 

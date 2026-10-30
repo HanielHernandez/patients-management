@@ -9,7 +9,7 @@ import {
   type ReactNode,
 } from 'react';
 import { useRouter } from 'next/navigation';
-import { apiRequest } from '@/lib/api';
+import { apiRequest, setUnauthorizedHandler } from '@/lib/api';
 import type { LoginResponse, User } from '@/lib/types';
 
 interface AuthContextValue {
@@ -67,6 +67,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
     router.replace('/login');
   }, [router]);
+
+  useEffect(() => {
+    setUnauthorizedHandler(logout);
+
+    return () => setUnauthorizedHandler(null);
+  }, [logout]);
 
   return (
     <AuthContext.Provider

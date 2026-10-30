@@ -11,6 +11,14 @@ export class ApiError extends Error {
   }
 }
 
+type UnauthorizedHandler = () => void;
+
+let unauthorizedHandler: UnauthorizedHandler | null = null;
+
+export function setUnauthorizedHandler(handler: UnauthorizedHandler | null) {
+  unauthorizedHandler = handler;
+}
+
 export async function apiRequest<T>(
   path: string,
   options: RequestInit = {},
@@ -33,6 +41,11 @@ export async function apiRequest<T>(
   });
 
   if (!response.ok) {
+    if (response.status === 401 && token && typeof window !== 'undefined') {
+      window.localStorage.removeItem('accessToken');
+      unauthorizedHandler?.();
+    }
+
     const error = await response.json().catch(() => null);
 
     throw new ApiError(
