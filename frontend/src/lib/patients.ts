@@ -1,7 +1,12 @@
 import { apiRequest } from '@/lib/api';
 import type { Patient, PatientsResponse } from '@/lib/types';
 
-export type PatientSortField = 'firstName' | 'lastName' | 'email' | 'createdAt';
+export type PatientSortField =
+  | 'firstName'
+  | 'lastName'
+  | 'email'
+  | 'dob'
+  | 'createdAt';
 export type PatientSortOrder = 'asc' | 'desc';
 
 export interface GetPatientsParams {
@@ -16,6 +21,7 @@ const patientSortFields: readonly PatientSortField[] = [
   'firstName',
   'lastName',
   'email',
+  'dob',
   'createdAt',
 ];
 

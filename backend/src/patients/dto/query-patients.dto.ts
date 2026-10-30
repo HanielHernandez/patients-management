@@ -30,8 +30,8 @@ export class QueryPatientsDto {
   search?: string;
 
   @IsOptional()
-  @IsIn(['firstName', 'lastName', 'email', 'createdAt'])
-  sortBy: 'firstName' | 'lastName' | 'email' | 'createdAt' = 'lastName';
+  @IsIn(['firstName', 'lastName', 'email', 'dob', 'createdAt'])
+  sortBy: 'firstName' | 'lastName' | 'email' | 'dob' | 'createdAt' = 'lastName';
 
   @IsOptional()
   @IsIn(['asc', 'desc'])

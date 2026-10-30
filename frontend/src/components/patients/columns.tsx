@@ -46,8 +46,9 @@ export function patientColumns({
       enableSorting: false,
     }),
     columnHelper.accessor('dob', {
-      header: 'Date of birth',
-      enableSorting: false,
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Date of birth" />
+      ),
       cell: ({ getValue }) => formatDate(getValue()),
     }),
     columnHelper.accessor('createdAt', {
